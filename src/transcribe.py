@@ -50,11 +50,12 @@ def prepare_audio(audio):
     return sample
 
 
-def transcribe(audio):
+def transcribe(model, audio):
     """
     Распознает слова в аудиоданных и возвращает в форме строки.
 
     Args:
+        model (pipeline): Содержит данные модель, полученную функцией load_model()
         audio (str or BinaryIO): Путь до файла, содержащего аудио, либо бинарные данные.
 
     Returns:
@@ -63,7 +64,6 @@ def transcribe(audio):
 
     sample = prepare_audio(audio)
 
-    model = load_model()
     text = model(sample.copy(), batch_size=8)['text'].strip()
 
     return text
