@@ -72,6 +72,7 @@ def transcribe(model, audio):
 # Функция теста работопособности
 if __name__ == '__main__':
 
-    text = transcribe('../test/sample1.flac')
+    model = load_model()
+    text = transcribe(model, '../test/sample1.flac')
 
     print(text)
