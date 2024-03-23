@@ -13,12 +13,12 @@ from categorizer import categorize_ticket
 categories = {
     0: 'Не определено',
     1: 'Финансовая система',
-    2: 'Сетевая проблема', 
-    3: 'Почта', 
-    4: 'Связь', 
-    5: 'Техника', 
-    6: 'Безопасность', 
-    7: 'Операционная система', 
+    2: 'Сетевая проблема',
+    3: 'Почта',
+    4: 'Связь',
+    5: 'Техника',
+    6: 'Безопасность',
+    7: 'Операционная система',
     8: 'Office'
 }
 
@@ -29,6 +29,7 @@ priorities = {
     3: 'низкий'
 }
 
+
 @st.cache_resource
 def load_modeltr():
     """
@@ -37,8 +38,8 @@ def load_modeltr():
     """
     return load_model()
 
-# функция вывода полученых данных
-# это временная функция. Будет разработан отдельный интерфейс отображения задачи, приоритета, категории
+
+# функция вывода полученых данных - временный интерфейс
 def output_data(ticket_data):
     st.write("Текст тикета:      "+ticket_data["ticket_text"])
     st.write("Категория задачи:  "+categories[ticket_data["category"]])
@@ -53,7 +54,6 @@ if __name__ == '__main__':
              категории задачи и ее приоритета""")
 
     audio_file = st.file_uploader('Загрузите аудиофайл',
-                                  #type=['mp3', 'm4a', 'flac'],
                                   type=['flac'],
                                   accept_multiple_files=False, key=None,
                                   on_change=None)
@@ -63,30 +63,35 @@ if __name__ == '__main__':
         'Локальный запуск распознавания или используем API?',
         ('Локально', 'API'), key='option')
 
-    btn1 = st.button("Поехали!", key="summ", type="primary")    
+    # добавляем кнопку в интерфейс
+    btn1 = st.button("Поехали!", key="summ", type="primary")
 
+    # проверям факт нажатия кнопки пользоваталем
     if btn1:
+        # кнопка нажата, аудиофайл загружен
         if audio_file:
+            # проверям выбор пользоваталем чекбокса (локально, или по API?)
             if option == 'Локально':
+                # пользователь выбрал Локально
                 st.write('Локальный запуск')
                 # загружаем модель
                 model = load_modeltr()
                 # вызываем функцию транскрибации текста
                 ticket_text = transcribe(model, audio_file)
+                # вызываем функцию категоризации и приоритезации задачи
                 ticket_data = categorize_ticket(ticket_text)
-                #ticket_data = {"ticket_text":ticket_text, "category":"категория", "priority": "приоритет 1"}
-
             else:
+                # пользователь выбрал "API"
                 st.write('Используем API')
-                # вызываем API метод, в который передаем аудио запись            
+                # вызываем API метод, в который передаем аудио запись
                 # ticket_data = get_ticket_api(audio_file)
                 ticket_text = "Здесь будет текст, который вернет API"
-                #ticket_data = categorize_tickets(ticket_text)
-                ticket_data = {"ticket_text":ticket_text, "category":"категория", "priority": "приоритет 1"}
-            # функция вывода тикета на фронт
+                ticket_data = {"ticket_text": ticket_text,
+                               "category": "категория", "priority": "приоритет 1"}
+
+            # ЗДЕСЬ ВЫЗЫВАЕТСЯ ФУНКЦИЯ ВЫВОДА ТИКЕТА НА ФРОНТ!!!
             output_data(ticket_data)
 
         else:
+            # указываем пользователю на то, что он не загрузил файл!
             st.write('Пожалуйста, загрузите аудиофайл')
-
-        

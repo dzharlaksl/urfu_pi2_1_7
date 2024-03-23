@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import *
+from .views import index, create_client, create_employee, create_ticket, tickets
 
 
 urlpatterns = [

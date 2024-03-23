@@ -1,4 +1,4 @@
-from .models import *
+from .models import Client, Category, Employee, Ticket
 from datetime import datetime
 
 
@@ -7,8 +7,10 @@ def create_demo_category():
     # проверяем, заполнены ли в БД категории
     if not Category.objects.exists():
         # категорий в базе не оказалось, значит создаем их
-        category = {0: "Не определено", 1: "Финансовая система", 2: "Сетевая проблема", 3: "Почта",
-                     4: "Связь", 5: "Техника", 6: "Безопасность", 7: "Операционная система", 8: "Office"}
+        category = {0: "Не определено", 1: "Финансовая система",
+                    2: "Сетевая проблема", 3: "Почта",
+                    4: "Связь", 5: "Техника", 6: "Безопасность",
+                    7: "Операционная система", 8: "Office"}
 
         # проходимся по каждому из элементов словаря
         for catid, catname in category.items():
@@ -23,11 +25,16 @@ def create_demo_clients():
     # проверяем, заполнены ли в БД клиенты
     if not Client.objects.exists():
 
-        clients = [{"phone": "+7 584 224-44-69", "email": "semenova@mail.ru", "fname": "Мария", "lname": "Семенова"},
-                   {"phone": "+7 993 445-45-60", "email": "kozlova@mail.ru", "fname": "Елена", "lname": "Козлова"},
-                   {"phone": "+7 985 444-78-99", "email": "koneva@gmail.com", "fname": "Василиса", "lname": "Конева"},
-                   {"phone": "+7 985 004 81-54", "email": "pronin@mail.ru", "fname": "Анатолий", "lname": "Пронин"},
-                   {"phone": "+7 008 484-77-77", "email": "stepanova@yahoo.com", "fname": "Анна", "lname": "Степанова"}
+        clients = [{"phone": "+7 584 224-44-69", "email": "semenova@mail.ru",
+                    "fname": "Мария", "lname": "Семенова"},
+                   {"phone": "+7 993 445-45-60", "email": "kozlova@mail.ru",
+                    "fname": "Елена", "lname": "Козлова"},
+                   {"phone": "+7 985 444-78-99", "email": "koneva@gmail.com",
+                    "fname": "Василиса", "lname": "Конева"},
+                   {"phone": "+7 985 004 81-54", "email": "pronin@mail.ru",
+                    "fname": "Анатолий", "lname": "Пронин"},
+                   {"phone": "+7 008 484-77-77", "email": "stepanova@yahoo.com",
+                    "fname": "Анна", "lname": "Степанова"}
                    ]
 
         # создаем дефолтного клиента (будет указываться по умолчанию)
@@ -38,7 +45,8 @@ def create_demo_clients():
         # проходимся по каждому из элементов словаря
         for cl in clients:
             # создаем объект класса Client и сохраняем его сразу в БД
-            client = Client(id=i, phone=cl["phone"], email=cl["email"], fname=cl["fname"], lname=cl["lname"])
+            client = Client(id=i, phone=cl["phone"], email=cl["email"],
+                            fname=cl["fname"], lname=cl["lname"])
             i += 1
             client.save()
 
@@ -49,16 +57,16 @@ def create_demo_employee():
     # проверяем, заполнены ли в БД сотрудники
     if not Employee.objects.exists():
 
-        employee = [{"phone": "+7 985 445-56-98", "email": "petrov@mail.ru", "fname": "Александр", "lname": "Петров",
-                     "category": 1},
-                    {"phone": "+7 844 138-48-74", "email": "boshirov@mail.ru", "fname": "Руслан", "lname": "Боширов",
-                     "category": 5},
-                    {"phone": "+7-456-987-45-24", "email": "mishkin@gmail.com", "fname": "Александр", "lname": "Мишкин",
-                     "category": 2},
-                    {"phone": "+7(456)445 44 56", "email": "chepiga@mail.ru", "fname": "Анатолий", "lname": "Чепига",
-                     "category": 4},
-                    {"phone": "+7-999-901-44-45", "email": "a.chapman@yahoo.com", "fname": "Анна", "lname": "Чапман",
-                     "category": 3}
+        employee = [{"phone": "+7 985 445-56-98", "email": "petrov@mail.ru",
+                     "fname": "Александр", "lname": "Петров", "category": 1},
+                    {"phone": "+7 844 138-48-74", "email": "boshirov@mail.ru",
+                     "fname": "Руслан", "lname": "Боширов", "category": 5},
+                    {"phone": "+7-456-987-45-24", "email": "mishkin@gmail.com",
+                     "fname": "Александр", "lname": "Мишкин", "category": 2},
+                    {"phone": "+7(456)445 44 56", "email": "chepiga@mail.ru",
+                     "fname": "Анатолий", "lname": "Чепига", "category": 4},
+                    {"phone": "+7-999-901-44-45", "email": "a.chapman@yahoo.com",
+                     "fname": "Анна", "lname": "Чапман", "category": 3}
                     ]
 
         # создаем дефолтного сотрудника (будет указываться, когда реальный сотрудник не известен, или уволился)
@@ -70,7 +78,8 @@ def create_demo_employee():
         # проходимся по каждому из элементов словаря
         for em in employee:
             # создаем объект класса Employee и сохраняем его сразу в БД
-            empl = Employee(id=i, phone=em["phone"], email=em["email"], fname=em["fname"], lname=em["lname"])
+            empl = Employee(id=i, phone=em["phone"], email=em["email"],
+                            fname=em["fname"], lname=em["lname"])
 
             try:
                 empl.category = Category.objects.get(id=em["category"])
@@ -88,10 +97,12 @@ def create_demo_ticket():
     # проверяем, заполнены ли в БД заявки
     if not Ticket.objects.exists():
 
-        tickets = [{"text_ticket": "Добрый день. У меня сломалась клавиатура. Ничего не могу напечатать, а завтра "
-                                   "сдавать годовой отчет. Срочно нужна замена. Памагите!!",
-                    "priority": 2, "category": 5, "client": 1, "employee": 3},
-                   {"text_ticket": "Периодически включается порнуха. Спасите, это все вирусы. Я тут не причем.",
+        tickets = [{"text_ticket": "Добрый день. У меня сломалась клавиатура."
+                    "Ничего не могу напечатать,а завтра сдавать годовой отчет."
+                    " Срочно нужна замена. Памагите!!", "priority": 2,
+                    "category": 5, "client": 1, "employee": 3},
+                   {"text_ticket": "Периодически включается порнуха. "
+                    "Спасите, это все вирусы. Я тут не причем.",
                     "priority": 3, "category": 6, "client": 2, "employee": 2},
                    {"text_ticket": "Винда глючит и тупит. Срочно помагите",
                     "priority": 1, "category": 7, "client": 4, "employee": 1},
@@ -99,9 +110,11 @@ def create_demo_ticket():
                     "priority": 3, "category": 5, "client": 3, "employee": 4},
                    {"text_ticket": "Не работает почта. Письма не приходят и не уходят",
                     "priority": 3, "category": 3, "client": 3, "employee": 4},
-                   {"text_ticket": "Не загружается Офис. Ругается на отсутствие лицензии. Необходимо установить Open office",
+                   {"text_ticket": "Не загружается Офис. Ругается на "
+                    "отсутствие лицензии. Необходимо установить Open office",
                     "priority": 3, "category": 8, "client": 3, "employee": 4},
-                   {"text_ticket": "Защитник перестал работать и не хочет обновляться. Просьба срочно решить проблему",
+                   {"text_ticket": "Защитник перестал работать и не "
+                    "хочет обновляться. Просьба срочно решить проблему",
                     "priority": 1, "category": 6, "client": 3, "employee": 4},
                    ]
 
@@ -110,8 +123,8 @@ def create_demo_ticket():
         for tic in tickets:
             # создаем объект класса Ticket и сохраняем его сразу в БД
 
-            ticket = Ticket(tdate=datetime(2024, 2, dt), audio_ticket="", text_ticket=tic["text_ticket"],
-                            priority=tic["priority"])
+            ticket = Ticket(tdate=datetime(2024, 2, dt), audio_ticket="",
+                            text_ticket=tic["text_ticket"], priority=tic["priority"])
 
             try:
                 ticket.category = Category.objects.get(id=tic["category"])

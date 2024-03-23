@@ -1,22 +1,43 @@
 from django.shortcuts import render
 from .forms import NewEmployeeForm, NewClientForm, CreateTicketForm
-from .demo import *
+from .demo import create_demo_category, create_demo_clients
+from .demo import create_demo_employee, create_demo_ticket
+from .models import Client, Employee, Category, Ticket
 from random import randint
+from datetime import datetime
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-
 from transcribe import transcribe, load_model
 from categorizer import categorize_ticket
 
 
 # стартовая страница с информацией о проекте и ссылками на основные функции
 def index(request):
+    """
+    Вызывается при запросе пользователем в браузере стартовой страницы веб-интерфейса (URL / )
+
+    Args:
+        request (obj): POST либо GET запрос, переданный браузером
+
+    Returns:
+        вызывается функция отрисовки темплейта index.html
+    """
     return render(request, "index.html")
 
 
 # функция создания нового клиента в БД
 def create_client(request):
+    """
+     Вызывается при запросе пользователем в браузере страницы
+     создания клиента URL /create_clients
+
+    Args:
+        request (obj): POST либо GET запрос, переданный браузером
+
+    Returns:
+        вызывается функция отрисовки темплейта newuser.html
+    """
 
     if request.method == "POST":
         newclient = Client()
@@ -35,6 +56,18 @@ def create_client(request):
 
 # внесение информации о новом сотруднике в базу данных
 def create_employee(request):
+    """
+     Вызывается при запросе пользователем в браузере страницы
+     создания сотрудника URL /create_employee
+
+    Args:
+        request (obj): POST либо GET запрос, переданный браузером
+
+    Returns:
+        вызывается функция отрисовки темплейта newuser.html
+        либо success.html - когда данные валидные и сотрудник создан в БД
+    """
+
     newempform = NewEmployeeForm(request.POST or None)
 
     # проверяем валидность введенных пользователем данных в форму
@@ -74,6 +107,25 @@ def create_employee(request):
 
 # создание новой задачи (тикета)
 def create_ticket(request):
+    """
+     Вызывается при запросе пользователем в браузере страницы
+     создания нового тикета URL /create_ticket. Выводит пользователю
+     форму ввода данных по заявке.
+     Заявку можно внести вручную, заполнив все поля, а можно
+     указать только телефон клиента (имеющийся в базе) и
+     загрузить аудиофайл в формате flac.
+     Во втором случае аудиозапись будет переведена в текст,
+     определена категория задачи и приоритет. На основании категории
+     будет подобран сотрудник поддержки (рандомом из выборки по БД),
+     который спецализируется на данной категории задач
+
+    Args:
+        request (obj): POST либо GET запрос, переданный браузером
+
+    Returns:
+        вызывается функция отрисовки темплейта create_ticket.html
+    """
+
     # передаем в форму данные полученные из метода POST и файлы.
     # это на тот случай, если пользовтаель уже ввел какие-то данные, но они оказались невалидными
     # и чтобы заново все не вносить, мы возвращаем в форму ранее заполненные пользователем данные
@@ -121,7 +173,6 @@ def create_ticket(request):
                     "errormes": "Категория " + request.POST.get("category") + " не найдена в базе данных!"}
             return render(request, "create_ticket.html", context=data)
 
-
         # подбираем сотрудника под задачу. Выгружаем всех сотрудников с требуемым типом задачи
         emp = Employee.objects.filter(category_id=category)
         if emp.count() > 0:
@@ -143,6 +194,17 @@ def create_ticket(request):
 
 # отображение списка всех тикетов (заданий)
 def tickets(request):
+    """
+     Вызывается при запросе пользователем в браузере страницы
+     вывода всех заявок в поддержку URL /tickets.
+     Заявки "вынимаются" из БД и отображаются в виде таблицы
+
+    Args:
+        request (obj): POST либо GET запрос, переданный браузером
+
+    Returns:
+        вызывается функция отрисовки темплейта tickets.html
+    """
     return render(request, "tickets.html", context={"tikets": Ticket.objects.all()})
 
 

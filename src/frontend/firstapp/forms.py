@@ -8,7 +8,8 @@ class NewEmployeeForm(forms.Form):
     lname = forms.CharField(label="Фамилия", max_length=20, required=False)
     phone = forms.CharField(label="Телефон", max_length=16, required=True)
     email = forms.EmailField(label="email", max_length=30, required=True)
-    catlist = [(num, cat.category_name) for num, cat in Category.objects.in_bulk().items()]
+    catlist = [(num, cat.category_name) for num, cat
+               in Category.objects.in_bulk().items()]
     category = forms.ChoiceField(label="Категория", choices=catlist)
 
 
@@ -23,10 +24,18 @@ class NewClientForm(forms.Form):
 # форма внесения данных по заявке (тикету)
 class CreateTicketForm(forms.Form):
     phone = forms.CharField(label="Телефон", max_length=16, required=True)
-    text_ticket = forms.CharField(label="Текст обращения", max_length=5000, required=False, widget=forms.Textarea)
-    priority = forms.ChoiceField(label="Приоритет", choices=[(1, "высокий"), (2, "средний"), (3, "низкий")])
-    catlist = [(num, cat.category_name) for num, cat in Category.objects.in_bulk().items()]
+    text_ticket = forms.CharField(label="Текст обращения",
+                                  max_length=5000, required=False,
+                                  widget=forms.Textarea)
+    priority = forms.ChoiceField(label="Приоритет",
+                                 choices=[(1, "высокий"),
+                                          (2, "средний"),
+                                          (3, "низкий")])
+    catlist = [(num, cat.category_name) for num, cat
+               in Category.objects.in_bulk().items()]
     category = forms.ChoiceField(label="Категория", choices=catlist)
-    emplist = [(num, emp.fname+" "+emp.lname) for num, emp in Employee.objects.in_bulk().items()]
+    emplist = [(num, emp.fname+" "+emp.lname) for num, emp
+               in Employee.objects.in_bulk().items()]
     employee = forms.ChoiceField(label="Сотрудник", choices=emplist)
-    audio_ticket = forms.FileField(label="Файл аудиозаписи", widget=forms.FileInput)
+    audio_ticket = forms.FileField(label="Файл аудиозаписи",
+                                   widget=forms.FileInput)

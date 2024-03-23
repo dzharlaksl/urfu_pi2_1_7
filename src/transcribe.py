@@ -70,7 +70,6 @@ def transcribe(model, audio):
 
 # Функция теста работопособности
 if __name__ == '__main__':
-    
     path_audio = Path(__file__).resolve().parent.parent / "test/sample1.flac"
     model = load_model()
     text = transcribe(model, path_audio)
