@@ -9,25 +9,7 @@
 import streamlit as st
 from transcribe import transcribe, load_model
 from categorizer import categorize_ticket
-
-categories = {
-    0: 'Не определено',
-    1: 'Финансовая система',
-    2: 'Сетевая проблема',
-    3: 'Почта',
-    4: 'Связь',
-    5: 'Техника',
-    6: 'Безопасность',
-    7: 'Операционная система',
-    8: 'Office'
-}
-
-# Определение приоритетов с ассоциированными ключевыми словами
-priorities = {
-    1: 'высокий',
-    2: 'средний',
-    3: 'низкий'
-}
+from set import categories, priorities
 
 
 @st.cache_resource
@@ -84,10 +66,12 @@ if __name__ == '__main__':
                 # пользователь выбрал "API"
                 st.write('Используем API')
                 # вызываем API метод, в который передаем аудио запись
-                # ticket_data = get_ticket_api(audio_file)
-                ticket_text = "Здесь будет текст, который вернет API"
-                ticket_data = {"ticket_text": ticket_text,
-                               "category": "категория", "priority": "приоритет 1"}
+                # и получаем обратно текст, категорию и приритет
+                # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА НАЧАЛО !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                # ticket_data = get_ticket_api(audio_file)                
+                ticket_data = {"ticket_text": "Здесь будет какой текст, который вернет API",
+                               "category": 0, "priority": 0}
+                # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА КОНЕЦ !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             # ЗДЕСЬ ВЫЗЫВАЕТСЯ ФУНКЦИЯ ВЫВОДА ТИКЕТА НА ФРОНТ!!!
             output_data(ticket_data)

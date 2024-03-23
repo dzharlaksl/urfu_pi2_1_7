@@ -1,5 +1,9 @@
 from .models import Client, Category, Employee, Ticket
 from datetime import datetime
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
+from set import categories
 
 
 # функция созданяи демо-данных для проекта
@@ -7,13 +11,8 @@ def create_demo_category():
     # проверяем, заполнены ли в БД категории
     if not Category.objects.exists():
         # категорий в базе не оказалось, значит создаем их
-        category = {0: "Не определено", 1: "Финансовая система",
-                    2: "Сетевая проблема", 3: "Почта",
-                    4: "Связь", 5: "Техника", 6: "Безопасность",
-                    7: "Операционная система", 8: "Office"}
-
         # проходимся по каждому из элементов словаря
-        for catid, catname in category.items():
+        for catid, catname in categories.items():
             # создаем объект класса Category и сохраняем его сразу в БД
             cat = Category(id=catid, category_name=catname)
             cat.save()
