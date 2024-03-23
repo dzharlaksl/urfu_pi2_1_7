@@ -10,6 +10,24 @@ import streamlit as st
 from transcribe import transcribe, load_model
 from categorizer import categorize_ticket
 
+categories = {
+    0: 'Не определено',
+    1: 'Финансовая система',
+    2: 'Сетевая проблема', 
+    3: 'Почта', 
+    4: 'Связь', 
+    5: 'Техника', 
+    6: 'Безопасность', 
+    7: 'Операционная система', 
+    8: 'Office'
+}
+
+# Определение приоритетов с ассоциированными ключевыми словами
+priorities = {
+    1: 'высокий',
+    2: 'средний',
+    3: 'низкий'
+}
 
 @st.cache_resource
 def load_modeltr():
@@ -23,8 +41,8 @@ def load_modeltr():
 # это временная функция. Будет разработан отдельный интерфейс отображения задачи, приоритета, категории
 def output_data(ticket_data):
     st.write("Текст тикета:      "+ticket_data["ticket_text"])
-    st.write("Категория задачи:  "+ticket_data["category"])
-    st.write("Категория задачи:  "+ticket_data["priority"])
+    st.write("Категория задачи:  "+categories[ticket_data["category"]])
+    st.write("Приоритет задачи:  "+priorities[ticket_data["priority"]])
 
 
 if __name__ == '__main__':

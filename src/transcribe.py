@@ -64,7 +64,6 @@ def transcribe(model, audio):
 
     sample = prepare_audio(audio)    
     text = model(sample.copy(), batch_size=8)['text'].strip()
-    #text = "здесь какой-то текст"
 
     return text
 
