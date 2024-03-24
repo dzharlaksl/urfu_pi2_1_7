@@ -6,6 +6,7 @@
 import torch
 import torchaudio
 from transformers import pipeline
+from pathlib import Path
 
 
 def load_model():
@@ -55,6 +56,7 @@ def transcribe(model, audio):
     Распознает слова в аудиоданных и возвращает в форме строки.
 
     Args:
+
         model (pipeline): Содержит данные модель, полученную функцией load_model()
         audio (str or BinaryIO): Путь до файла, содержащего аудио, либо бинарные данные.
 
@@ -72,7 +74,8 @@ def transcribe(model, audio):
 # Функция теста работопособности
 if __name__ == '__main__':
 
+    path_audio = Path(__file__).resolve().parent.parent / "test/sample1.flac"
     model = load_model()
-    text = transcribe(model, '../test/sample1.flac')
+    text = transcribe(model, path_audio)
 
     print(text)
