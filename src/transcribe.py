@@ -9,18 +9,28 @@ from transformers import pipeline
 from pathlib import Path
 
 
-def load_model():
+def load_model(device=None):
     """
     Задает настройки модели и готовит ее к дальнейшему использованию.
     При использовании с интерфейсом Streamlit, функцию следует оборачивать
     в отдельную и декоратор @st.cache_resource для кэширования.
+
+    Args:
+        device (str): Выбор аппартного средства для обработки, может принимать
+          значения 'cuda:0' or 'cpu'. Используется для избегания проблем
+          совместимости на разных платформах. Если не задан, то функция пытается
+          испльзовать обработку через блоки cuda, если возможно.
 
     Returns:
         Pipeline: Подготовленная модель с преднастройками
     """
 
     model_name = 'openai/whisper-base'
-    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    if device is None:
+        device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
+    # Выводим информацию о процессе работы в консоль
+    print(f'Load model to execute on device: {device}')
 
     pipe = pipeline(
         "automatic-speech-recognition",
@@ -32,20 +42,23 @@ def load_model():
     return pipe
 
 
-def prepare_audio(audio):
+def prepare_audio(audio, backend="ffmpeg"):
     """
     Преобразует аудиоданные из файла в словарь, пригодный для использования в моделях.
     В качестве элементов словаря присутствуют аудиоданные в виде массив и частота.
 
     Args:
         audio (str or BinaryIO): Путь до файла, содержащего аудио, либо бинарные данные.
+        backend (str), default 'ffmpeg": метод декодирования аудио, может принимать значения:
+         "ffmpeg", "sox", "soundfile" или None. Выбирается исходя из установленных
+         приложений.
 
     Returns:
         dict: array - аудиоданные, sampling_rate - частота
     """
 
     # Преобразуем аудиофайл в данные, пригодные для моделей
-    tensor, sampling_rate = torchaudio.load(audio)
+    tensor, sampling_rate = torchaudio.load(audio, backend=backend)
     sample = {'array': tensor.numpy()[0], 'sampling_rate': sampling_rate}
 
     return sample
