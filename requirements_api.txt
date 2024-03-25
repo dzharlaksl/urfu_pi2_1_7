@@ -1,0 +1,11 @@
+annotated-types @ file:///croot/annotated-types_1709542908624/work
+anyio @ file:///croot/anyio_1706220167567/work
+fastapi @ file:///work/perseverance-python-buildout/croot/fastapi_1707343766100/work
+idna @ file:///work/perseverance-python-buildout/croot/idna_1698845632828/work
+pydantic @ file:///croot/pydantic_1709577974639/work
+pydantic_core @ file:///croot/pydantic-core_1709573961665/work
+setuptools==68.2.2
+sniffio @ file:///croot/sniffio_1705431295498/work
+starlette @ file:///work/perseverance-python-buildout/croot/starlette-recipe_1707343489817/work
+typing_extensions @ file:///croot/typing_extensions_1705619912070/work
+wheel==0.41.2
