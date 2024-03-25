@@ -1,11 +1,12 @@
 # Import библиотеки для создания API и загрузки файла
 from fastapi import FastAPI, UploadFile
 # Import функций с моделями
-from transcribe import load_model, transcribe # Функция перевода аудио в текст
-from categorize import categorize_ticket # Функция определения категории и приоритетности запроса по тексту
+from transcribe import load_model, transcribe  # Функция перевода аудио в текст
+# Функция определения категории и приоритетности запроса по тексту
+from categorize import categorize_ticket
 
-app = FastAPI() # Создаем приложение в переменной app
-model = load_model() # Загружаем модель в переменную model
+app = FastAPI()  # Создаем приложение в переменной app
+model = load_model()  # Загружаем модель в переменную model
 
 
 @app.post("/model/")
