@@ -9,7 +9,6 @@
 import streamlit as st
 from transcribe import transcribe, load_model
 from categorizer import categorize_ticket
-from set import categories, priorities
 
 
 @st.cache_resource
@@ -21,15 +20,14 @@ def load_modeltr():
     return load_model()
 
 
-# функция вывода полученых данных - временный интерфейс
+# функция вывода полученых данных - переключает на страницу результата
 def output_data(ticket_data):
-    st.write("Текст тикета:      "+ticket_data["ticket_text"])
-    st.write("Категория задачи:  "+categories[ticket_data["category"]])
-    st.write("Приоритет задачи:  "+priorities[ticket_data["priority"]])
+    st.session_state["ticket_data"] = ticket_data
+    st.switch_page("pages/result.py")
 
 
 if __name__ == '__main__':
-    # выводим приверственный тайтл и кратко обозначаем функционал приложения
+    # выводим приветственный тайтл и кратко обозначаем функционал приложения
     st.title('AI генератор задач для техподдержки')
     st.write("""На основании аудиозаписи автоответчика службы поддержки
              производится перевод аудио в текст, а также определение
@@ -37,13 +35,13 @@ if __name__ == '__main__':
 
     audio_file = st.file_uploader('Загрузите аудиофайл',
                                   type=['flac'],
-                                  accept_multiple_files=False, key=None,
+                                  accept_multiple_files=False, key='audio_file',
                                   on_change=None)
 
     # предлагаем пользователю выбрать, локально запускаем модель или по API
-    option = st.selectbox(
+    option = st.radio(
         'Локальный запуск распознавания или используем API?',
-        ('Локально', 'API'), key='option')
+        ('Локально', 'API'))
 
     # добавляем кнопку в интерфейс
     btn1 = st.button("Поехали!", key="summ", type="primary")
@@ -56,22 +54,28 @@ if __name__ == '__main__':
             if option == 'Локально':
                 # пользователь выбрал Локально
                 st.write('Локальный запуск')
-                # загружаем модель
-                model = load_modeltr()
-                # вызываем функцию транскрибации текста
-                ticket_text = transcribe(model, audio_file)
-                # вызываем функцию категоризации и приоритезации задачи
-                ticket_data = categorize_ticket(ticket_text)
+                with st.status("Анализируем файл...", expanded=True) as status:
+                    st.write("Загружаем модель...")
+                    # загружаем модель
+                    model = load_modeltr()
+                    st.write("Распознаем речь...")
+                    # вызываем функцию транскрибации текста
+                    ticket_text = transcribe(model, audio_file)
+                    st.write("Анализируем текст...")
+                    # вызываем функцию категоризации и приоритезации задачи
+                    ticket_data = categorize_ticket(ticket_text)
             else:
                 # пользователь выбрал "API"
                 st.write('Используем API')
-                # вызываем API метод, в который передаем аудио запись
-                # и получаем обратно текст, категорию и приритет
-                # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА НАЧАЛО !!!!!!!!!!!!!!!!!!!!!!!!!!!
-                # ticket_data = get_ticket_api(audio_file)                
-                ticket_data = {"ticket_text": "Здесь будет какой текст, который вернет API",
-                               "category": 0, "priority": 0}
-                # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА КОНЕЦ !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                with st.status("Анализируем файл...", expanded=True) as status:
+                    st.write("Отправляем API запрос...")
+                    # вызываем API метод, в который передаем аудио запись
+                    # и получаем обратно текст, категорию и приритет
+                    # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА НАЧАЛО !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    # ticket_data = get_ticket_api(audio_file)
+                    ticket_data = {"ticket_text": "Здесь будет какой текст, который вернет API",
+                                   "category": 0, "priority": 0}
+                    # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА КОНЕЦ !!!!!!!!!!!!!!!!!!!!!!!!!!!
 
             # ЗДЕСЬ ВЫЗЫВАЕТСЯ ФУНКЦИЯ ВЫВОДА ТИКЕТА НА ФРОНТ!!!
             output_data(ticket_data)
