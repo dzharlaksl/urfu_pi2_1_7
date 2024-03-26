@@ -63,7 +63,7 @@ def categorize_text(text):
     return best_cat
 
 
-def name_category(id):
+def category_name(id):
     """
     Функция возвращает название по числовому id
 
@@ -100,7 +100,7 @@ def determine_priority(text):
     return 0
 
 
-def name_priority(id):
+def priority_name(id):
     """
     Функция возвращает название приоритета по числовому id
 
