@@ -4,12 +4,12 @@ from collections import namedtuple
 # Функция для определения категории по ключевым словам
 def categorize_text(text):
 
-    for category in categories.values():
+    for id_cat, category in categories.items():
         if any(word in text for word in category.key_words):
-            return category.name
+            return id_cat
 
     # Возвращаем категорию "неопределно", если ключевые слова не найдены
-    return categories[0].name
+    return 0
 
 
 # Функция для определения приоритета текста на основе его эмоциональной окраски
@@ -58,14 +58,25 @@ def determine_priority(text):
         return priorities[0]  # Не определен
 
 
+def name_category(id):
+    """Функция возвращает название по числовому id
+
+    Args:
+        id (int): id категории
+
+    Returns:
+        str: название категории
+    """
+    return categories[id].name
+
+
 # Основная функция скрипта
-def process_texts(texts):
-    results = []
-    for text in texts:
-        category = categorize_text(text)
-        priority = determine_priority(text)
-        results.append(f"Заявка: {category}, Приоритет: {priority}")
-    return results
+def process_texts(text):
+
+    category = categorize_text(text)
+    priority = determine_priority(text)
+
+    return {"category": category, "priority": priority}
 
 
 # Категории и приоритеты
