@@ -117,7 +117,18 @@ def priority_name(id):
 
 
 # Основная функция скрипта
-def process_texts(text):
+def ticket_info(text):
+    """
+    Определяет категорию и приоритет заявки по тексту
+
+    Args:
+        text (str): текст заявки
+
+    Returns:
+        dict:
+            category (int): id категории
+            priority (int): id приоритета
+    """
 
     category = categorize_text(text)
     priority = determine_priority(text)
