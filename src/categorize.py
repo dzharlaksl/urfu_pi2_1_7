@@ -12,52 +12,6 @@ def categorize_text(text):
     return 0
 
 
-# Функция для определения приоритета текста на основе его эмоциональной окраски
-def determine_priority(text):
-    # Ключевые слова для высокого, среднего и низкого приоритета
-    high_priority_keywords = [
-        "срочно",
-        "немедленно",
-        "важно",
-        "критический",
-        "неотложный",
-    ]
-    medium_priority_keywords = [
-        "проблема",
-        "задержка",
-        "необходимо",
-        "требуется",
-        "ожидается",
-    ]
-    low_priority_keywords = [
-        "информация",
-        "запрос",
-        "пожелание",
-        "рекомендация",
-        "уведомление",
-    ]
-
-    # Проверка на ключевые слова высокого приоритета
-    if any(keyword in text for keyword in high_priority_keywords):
-        return priorities[1]  # Высокий
-
-    # Проверка на ключевые слова среднего приоритета
-    elif any(keyword in text for keyword in medium_priority_keywords):
-        return priorities[2]  # Средний
-
-    # Проверка на ключевые слова низкого приоритета
-    elif any(keyword in text for keyword in low_priority_keywords):
-        return priorities[3]  # Низкий
-
-    # Проверка на восклицательные знаки как признак высокого приоритета
-    elif "!" in text:
-        return priorities[1]  # Высокий
-
-    # Если ни одно из вышеуказанных условий не выполнено, возвращаем 'Не определен'
-    else:
-        return priorities[0]  # Не определен
-
-
 def name_category(id):
     """Функция возвращает название по числовому id
 
@@ -68,6 +22,41 @@ def name_category(id):
         str: название категории
     """
     return categories[id].name
+
+
+def determine_priority(text):
+    """Функция для определения приоритета текста на основе его эмоциональной окраски
+
+    Args:
+        text (str): текст для анализа
+
+    Returns:
+        int: id приоритета
+    """
+
+    for priority_id, priority in priorities.items():
+        if any(keyword in text for keyword in priority.key_words):
+            return priority_id
+
+    # Если ключевые слова не найдены, но есть восклицательные знаки,
+    # то код 1 - Высокий приоритет
+    if "!" in text:
+        return 1
+
+    # Если приоритет не найден, то возвращаем код 0 - не определено
+    return 0
+
+
+def name_priority(id):
+    """Функция возвращает название приоритета по числовому id
+
+    Args:
+        id (int): id приоритета
+
+    Returns:
+        str: название приоритета
+    """
+    return priorities[id].name
 
 
 # Основная функция скрипта
@@ -81,6 +70,7 @@ def process_texts(text):
 
 # Категории и приоритеты
 Category = namedtuple("Category", "name key_words")
+Priority = namedtuple("Priority", "name key_words")
 
 categories = {
     0: Category(
@@ -297,4 +287,36 @@ categories = {
     ),
 }
 
-priorities = {0: "Не определен", 1: "Высокий", 2: "Средний", 3: "Низкий"}
+priorities = {
+    0: Priority("Не определен", []),
+    1: Priority(
+        "Высокий",
+        [
+            "срочно",
+            "немедленно",
+            "важно",
+            "критический",
+            "неотложный",
+        ],
+    ),
+    2: Priority(
+        "Средний",
+        [
+            "проблема",
+            "задержка",
+            "необходимо",
+            "требуется",
+            "ожидается",
+        ],
+    ),
+    3: Priority(
+        "Низкий",
+        [
+            "информация",
+            "запрос",
+            "пожелание",
+            "рекомендация",
+            "уведомление",
+        ],
+    ),
+}
