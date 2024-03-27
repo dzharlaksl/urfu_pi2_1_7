@@ -8,7 +8,10 @@
 # импортируем необходимые бибилиотеки
 import streamlit as st
 from transcribe import transcribe, load_model
-from categorizer import categorize_ticket
+from categorize import ticket_info
+import requests
+
+API_URL = 'http://127.0.0.1:8008/ticket-info/'
 
 
 @st.cache_resource
@@ -24,6 +27,12 @@ def load_modeltr():
 def output_data(ticket_data):
     st.session_state["ticket_data"] = ticket_data
     st.switch_page("pages/result.py")
+
+
+def api_ticket_info(audio_file):
+    files = {'audio_file': audio_file}
+    response = requests.post(API_URL, files=files)
+    return response.json()
 
 
 if __name__ == '__main__':
@@ -60,22 +69,19 @@ if __name__ == '__main__':
                     model = load_modeltr()
                     st.write("Распознаем речь...")
                     # вызываем функцию транскрибации текста
-                    ticket_text = transcribe(model, audio_file)
+                    text = transcribe(model, audio_file)
                     st.write("Анализируем текст...")
                     # вызываем функцию категоризации и приоритезации задачи
-                    ticket_data = categorize_ticket(ticket_text)
+                    ticket_data = ticket_info(text)
+                    ticket_data['text'] = text
             else:
                 # пользователь выбрал "API"
                 st.write('Используем API')
                 with st.status("Анализируем файл...", expanded=True) as status:
                     st.write("Отправляем API запрос...")
                     # вызываем API метод, в который передаем аудио запись
-                    # и получаем обратно текст, категорию и приритет
-                    # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА НАЧАЛО !!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    # ticket_data = get_ticket_api(audio_file)
-                    ticket_data = {"ticket_text": "Здесь будет какой текст, который вернет API",
-                                   "category": 0, "priority": 0}
-                    # !!!!!!!!!!!!!!!!!!! ЗАГЛУШКА КОНЕЦ !!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    # и получаем обратно текст, категорию и приоритет
+                    ticket_data = api_ticket_info(audio_file)
 
             # ЗДЕСЬ ВЫЗЫВАЕТСЯ ФУНКЦИЯ ВЫВОДА ТИКЕТА НА ФРОНТ!!!
             output_data(ticket_data)
