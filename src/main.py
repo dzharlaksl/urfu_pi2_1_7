@@ -20,9 +20,9 @@ async def process(audio_file: UploadFile):
 
     Returns:
         Текст в формате JSON, где:
-        Transcription - текст из аудио,
-        Category - категория тикета,
-        Priority - приоритет тикета.
+            text - текст из аудио,
+            category - категория тикета,
+            priority - приоритет тикета.
     """
     content = audio_file.file.read()
     transcription = transcribe(model, content)

@@ -1,4 +1,12 @@
+.gitignore
 .venv/
 .env/
-/src/__pycache__
+venv/
+src/__pycache__
+src/frontend/firstapp/__pycache__/
+src/frontend/firstapp/migrations/__pycache__/
+src/frontend/frontend/__pycache__/
 .DS_Store
+.idea/
+media/
+tmp/
