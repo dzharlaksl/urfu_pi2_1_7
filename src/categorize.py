@@ -54,8 +54,10 @@ def categorize_text(text):
 
     for id_cat, category in categories.items():
         B = set(category.key_words)
-         
-        score = len(A.intersection(B))/len(A.union(B))
+        if len(A.union(B)) > 0:
+            score = len(A.intersection(B))/len(A.union(B))
+        else:
+            score = 0
         if score > best_score:
             best_score = score
             best_cat = id_cat
@@ -94,8 +96,12 @@ def determine_priority(text):
 
     for id_priority, priority in priorities.items():
         B = set(priority.key_words)
-         
-        score = len(A.intersection(B))/len(A.union(B))
+
+        if len(A.union(B)) > 0:
+            score = len(A.intersection(B))/len(A.union(B))
+        else:
+            score = 0
+
         if score > best_score:
             best_score = score
             best_priority = id_priority
