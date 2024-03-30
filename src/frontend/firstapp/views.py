@@ -8,8 +8,8 @@ from datetime import datetime
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-from transcribe import transcribe, load_model
-from categorizer import categorize_ticket
+from transcribe import transcribe, load_model  # noqa: E402
+from categorizer import categorize_ticket  # noqa: E402
 
 
 # стартовая страница с информацией о проекте и ссылками на основные функции

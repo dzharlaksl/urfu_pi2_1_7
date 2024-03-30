@@ -3,32 +3,33 @@ from collections import namedtuple
 
 import pymorphy2
 
+
 def words_from_text(text):
     """
-    Функция возвращает список слов, приведенных к нормальной форме.    
+    Функция возвращает список слов, приведенных к нормальной форме.
 
     Args:
         text (str): текст, из которого извлекаются слова
 
     Returns:
         list: массив слов в нормальной форме
-    """    
+    """
     clean_text = text.lower()
 
-    clean_text = re.sub(r'[^\w\s]',' ',clean_text) # Убираем пунктуацию    
-    clean_text = re.sub('\s{2,}', ' ', clean_text) # Убираем лишние пробелы
+    clean_text = re.sub(r'[^\w\s]', ' ', clean_text)  # Убираем пунктуацию
+    clean_text = re.sub(r'\s{2,}', ' ', clean_text)  # Убираем лишние пробелы
 
     legal_word = []
     for category in categories.values():
         legal_word.extend(category.key_words)
 
     # Убираем короткие слова, в основном предлоги, но сохраняем исключения, например "IP"
-    words = [word for word in clean_text.split() if len(word) >2 or word in legal_word] 
+    words = [word for word in clean_text.split() if len(word) > 2 or word in legal_word]
 
     normal_words = []
     morph = pymorphy2.MorphAnalyzer()
     for word in words:
-        normal_words.append(morph.parse(word)[0].normal_form)        
+        normal_words.append(morph.parse(word)[0].normal_form)
 
     return normal_words
 
@@ -48,7 +49,7 @@ def categorize_text(text):
     """
 
     normal_words = words_from_text(text)
-    A = set(normal_words)    
+    A = set(normal_words)
     best_cat = 0
     best_score = 0
 
@@ -90,7 +91,7 @@ def determine_priority(text):
     """
 
     normal_words = words_from_text(text)
-    A = set(normal_words)    
+    A = set(normal_words)
     best_priority = 0
     best_score = 0
 
@@ -180,18 +181,18 @@ categories = {
             "соединение",
             "маршрутизатор",
             "сервер",
-            "IP",
-            "VPN",
+            "ip",
+            "vpn",
             "протокол",
             "шифрование",
             "порт",
-            "Wi-Fi",
-            "LAN",
-            "WAN",
+            "wi-fi",
+            "lan",
+            "wan",
             "пинг",
             "трафик",
             "брандмауэр",
-            "DNS",
+            "dns",
             "провайдер"
         ],
     ),
@@ -203,15 +204,15 @@ categories = {
             "вложение",
             "спам",
             "рассылка",
-            "SMTP",
-            "IMAP",            
+            "smtp",
+            "imap",
             "фильтрация",
             "адресат",
             "отправитель",
             "тема",
             "подпись",
             "автоответчик",
-            "рассылка",            
+            "рассылка",
             "конфиденциальность",
             "уведомление"
         ],
@@ -225,12 +226,12 @@ categories = {
             "оператор",
             "сигнал",
             "звонок",
-            "SMS",            
+            "sms",
             "роуминг",
-            "SIM-карта",
-            "LTE",
-            "4G",
-            "5G",
+            "sim-карта",
+            "lte",
+            "4g",
+            "5g",
             "сотовый",
             "станция",
             "абонент",
@@ -250,15 +251,15 @@ categories = {
             "ноутбук",
             "монитор",
             "диск",
-            "USB",
+            "usb",
             "мышь",
             "клавиатура",
             "процессор",
             "видеокарта",
-            "RAM",
+            "ram",
             "память",
-            "SSD",
-            "HDD",
+            "ssd",
+            "hdd",
             "плата",
             "питание",
             "устройство",
@@ -271,7 +272,7 @@ categories = {
             "безопасность",
             "вирус",
             "антивирус",
-            "шпионское ПО",
+            "шпионское по",
             "фишинг",
             "хакер",
             "защита данных",
@@ -292,33 +293,33 @@ categories = {
         "Операционная система",
         [
             "операционный",
-            "Windows",
-            "Linux",
-            "macOS",
+            "windows",
+            "linux",
+            "macos",
             "обновление",
             "установка",
             "драйвер",
             "системный",
             "файл",
-            "реестр",            
+            "реестр",
             "терминал",
             "интерфейс",
-            "GUI",
+            "gui",
             "процесс",
             "задача",
-            "память",            
-            "настройка",            
+            "память",
+            "настройка",
             "журнал"
         ],
     ),
     8: Category(
         "Office",
         [
-            "Office",
-            "Word",
-            "Excel",
-            "PowerPoint",
-            "Outlook",
+            "office",
+            "word",
+            "excel",
+            "powerpoint",
+            "outlook",
             "редактирование",
             "таблица",
             "презентация",
@@ -331,7 +332,7 @@ categories = {
             "функция",
             "формула",
             "сортировка",
-            "фильтрация"            
+            "фильтрация"
         ],
     ),
 }

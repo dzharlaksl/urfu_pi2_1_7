@@ -3,7 +3,7 @@ from datetime import datetime
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
-from set import categories
+from set import categories  # noqa: E402
 
 
 # функция созданяи демо-данных для проекта
