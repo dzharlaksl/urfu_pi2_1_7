@@ -3,32 +3,33 @@ from collections import namedtuple
 
 import pymorphy2
 
+
 def words_from_text(text):
     """
-    Функция возвращает список слов, приведенных к нормальной форме.    
+    Функция возвращает список слов, приведенных к нормальной форме.
 
     Args:
         text (str): текст, из которого извлекаются слова
 
     Returns:
         list: массив слов в нормальной форме
-    """    
+    """
     clean_text = text.lower()
 
-    clean_text = re.sub(r'[^\w\s]',' ',clean_text) # Убираем пунктуацию    
-    clean_text = re.sub('\s{2,}', ' ', clean_text) # Убираем лишние пробелы
+    clean_text = re.sub(r'[^\w\s]', ' ', clean_text)  # Убираем пунктуацию
+    clean_text = re.sub(r'\s{2,}', ' ', clean_text)  # Убираем лишние пробелы
 
     legal_word = []
     for category in categories.values():
         legal_word.extend(category.key_words)
 
     # Убираем короткие слова, в основном предлоги, но сохраняем исключения, например "IP"
-    words = [word for word in clean_text.split() if len(word) >2 or word in legal_word] 
+    words = [word for word in clean_text.split() if len(word) > 2 or word in legal_word]
 
     normal_words = []
     morph = pymorphy2.MorphAnalyzer()
     for word in words:
-        normal_words.append(morph.parse(word)[0].normal_form)        
+        normal_words.append(morph.parse(word)[0].normal_form)
 
     return normal_words
 
@@ -48,7 +49,7 @@ def categorize_text(text):
     """
 
     normal_words = words_from_text(text)
-    A = set(normal_words)    
+    A = set(normal_words)
     best_cat = 0
     best_score = 0
 
@@ -90,7 +91,7 @@ def determine_priority(text):
     """
 
     normal_words = words_from_text(text)
-    A = set(normal_words)    
+    A = set(normal_words)
     best_priority = 0
     best_score = 0
 
@@ -204,14 +205,14 @@ categories = {
             "спам",
             "рассылка",
             "SMTP",
-            "IMAP",            
+            "IMAP",
             "фильтрация",
             "адресат",
             "отправитель",
             "тема",
             "подпись",
             "автоответчик",
-            "рассылка",            
+            "рассылка",
             "конфиденциальность",
             "уведомление"
         ],
@@ -225,7 +226,7 @@ categories = {
             "оператор",
             "сигнал",
             "звонок",
-            "SMS",            
+            "SMS",
             "роуминг",
             "SIM-карта",
             "LTE",
@@ -300,14 +301,14 @@ categories = {
             "драйвер",
             "системный",
             "файл",
-            "реестр",            
+            "реестр",
             "терминал",
             "интерфейс",
             "GUI",
             "процесс",
             "задача",
-            "память",            
-            "настройка",            
+            "память",
+            "настройка",
             "журнал"
         ],
     ),
@@ -331,7 +332,7 @@ categories = {
             "функция",
             "формула",
             "сортировка",
-            "фильтрация"            
+            "фильтрация"
         ],
     ),
 }
