@@ -17,7 +17,7 @@ st.write(f"Приоритет задачи: **{priority_name(ticket_data['priori
 st.write(f"Текст тикета: **{ticket_data['text']}**")
 
 # При необходимости можно послушать аудио
-st.audio(audio_file, format='audio/ogg')
+st.audio(audio_file)
 
 # возврат на главную страницу
 if st.button("Загрузить другой файл"):
