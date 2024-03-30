@@ -78,7 +78,7 @@ uvicorn main:app --port 8008
 ---
 
 ## 7. Команда
-Команда состоит из 4-х человек (группа №7):
+Команда состоит из 6-х человек (группа №7):
 - [Игорь Ерошин](https://github.com/tmerurfu)
 - [Татьяна Меркурьева](https://github.com/dzharlaksl)
 - [Евгений Брылин](https://github.com/bev-ru)
