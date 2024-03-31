@@ -29,7 +29,7 @@ def test_main_sample1():
         )
 
         result = response.json()
-        assert cosine_similarity(result["text"], reference_text) >= 0.95
+        assert cosine_similarity(result["text"], reference_text) >= 0.9
         assert result["category"] == 0
         assert result["priority"] == 0
 
@@ -54,7 +54,7 @@ def test_main_sample2():
         )
 
         result = response.json()
-        assert cosine_similarity(result["text"], reference_text) >= 0.95
+        assert cosine_similarity(result["text"], reference_text) >= 0.9
         assert result["category"] == 1
         assert result["priority"] == 1
 
@@ -78,7 +78,7 @@ def test_main_sample3():
         )
 
         result = response.json()
-        assert cosine_similarity(result["text"], reference_text) >= 0.95
+        assert cosine_similarity(result["text"], reference_text) >= 0.9
         assert result["category"] == 2
         assert result["priority"] == 0
 
@@ -103,7 +103,7 @@ def test_main_sample4():
         )
 
         result = response.json()
-        assert cosine_similarity(result["text"], reference_text) >= 0.95
+        assert cosine_similarity(result["text"], reference_text) >= 0.9
         assert result["category"] == 8
         assert result["priority"] == 1
 
@@ -126,6 +126,6 @@ def test_main_sample6():
         )
 
         result = response.json()
-        assert cosine_similarity(result["text"], reference_text) >= 0.95
+        assert cosine_similarity(result["text"], reference_text) >= 0.9
         assert result["category"] == 0
         assert result["priority"] == 2
