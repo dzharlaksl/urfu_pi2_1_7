@@ -15,7 +15,7 @@ API_URL = 'http://127.0.0.1:8008/ticket-info/'
 
 
 @st.cache_resource
-def load_modeltr():
+def load_transcribing_model():
     """
     Вызываем функцию загрузки модели
     Кешируем загрузку модели (экономия ресурсов) через @st.cache_resource
@@ -89,7 +89,7 @@ if __name__ == '__main__':
                 with st.status("Анализируем файл...", expanded=True) as status:
                     st.write("Загружаем модель...")
                     # загружаем модель
-                    model = load_modeltr()
+                    model = load_transcribing_model()
                     st.write("Распознаем речь...")
                     # вызываем функцию транскрибации текста
                     text = transcribe(model, audio_file)
