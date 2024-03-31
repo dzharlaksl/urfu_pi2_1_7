@@ -10,3 +10,4 @@ src/frontend/frontend/__pycache__/
 .idea/
 media/
 tmp/
+.vscode
